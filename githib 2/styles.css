@@ -1,0 +1,222 @@
+/* General Styles */
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    direction: rtl;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.logo-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.site-logo {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Headings */
+h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: 600;
+    color: #666;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* Primary Button */
+button.primary {
+    background-color: #28a745;
+    color: white;
+}
+
+button.primary:hover {
+    background-color: #218838;
+}
+
+/* Secondary Button */
+button.secondary {
+    background-color: #007bff;
+    color: white;
+}
+
+button.secondary:hover {
+    background-color: #0056b3;
+}
+
+/* Logout Button */
+#logoutBtn {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Error and Success Messages */
+#successMessage, #errorMessage {
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+    display: none;
+}
+
+#successMessage {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#errorMessage {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Orders Modal */
+.orders-modal {
+    position: fixed;
+    top: 10%;
+    right: 10%;
+    width: 80%;
+    max-width: 900px;
+    max-height: 80%;
+    overflow-y: auto;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.close-modal {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Orders Summary */
+.orders-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.summary-item span:first-child {
+    margin-right: 10px;
+    color: #333;
+}
+
+.summary-item span:last-child {
+    color: #007bff;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .orders-modal {
+        width: 90%;
+    }
+}
+
+@media (max-width: 576px) {
+    .orders-summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .summary-item {
+        margin-bottom: 10px;
+    }
+}
