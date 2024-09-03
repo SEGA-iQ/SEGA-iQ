@@ -167,13 +167,6 @@ function validateOrderForm(customerNumber, location, price, orderPrice, orderDig
         hideFieldError('locationError');
     }
 
-    if (!price || isNaN(price)) {
-        showFieldError('priceError', 'يرجى إدخال سعر توصيل صحيح.');
-        isValid = false;
-    } else {
-        hideFieldError('priceError');
-    }
-
     if (!orderPrice || isNaN(orderPrice)) {
         showFieldError('orderPriceError', 'يرجى إدخال سعر طلب صحيح.');
         isValid = false;
