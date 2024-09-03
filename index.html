@@ -3,9 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طلب سائق</title>
+    <title>نظام طلبات المطعم</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="styles.css"> <!-- ربط ملف CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cairo&display=swap">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f4f4f4;
+            direction: rtl;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInLogo 1.5s ease-in-out;
+        }
+
+        .site-logo {
+            max-width: 70%;
+            height: auto;
+            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+        }
+
+        @keyframes fadeInLogo {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #444;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #888;
+            font-style: italic;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #28a745;
+            outline: none;
+        }
+
+        button {
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        #submitOrder {
+            background-color: #28a745;
+            color: white;
+            width: 100%;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        #submitOrder:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+        }
+
+        #logoutBtn {
+            background-color: #dc3545;
+            color: white;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 150px;
+            border-radius: 10px;
+        }
+
+        #logoutBtn:hover {
+            background-color: #c82333;
+        }
+
+        .restaurant-name {
+            text-align: center;
+            font-size: 2rem;
+            color: #444;
+            margin: 20px 0;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInText 1s ease-in-out;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .orders-modal {
+            position: fixed;
+            top: 10%;
+            right: 10%;
+            width: 80%;
+            max-height: 80%;
+            overflow-y: auto;
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .close-modal {
+            background-color: #ffc107;
+            color: black;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        #successMessage, #errorMessage {
+            padding: 20px;
+            border-radius: 7px;
+            text-align: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        #successMessage {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #errorMessage {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            #submitOrder {
+                width: 100%;
+            }
+
+            #logoutBtn {
+                width: 100%;
+                left: 0;
+                bottom: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -19,11 +237,13 @@
         <h2>تسجيل دخول المطعم</h2>
         <div class="form-group">
             <label for="email">البريد الإلكتروني:</label>
-            <input type="text" id="email" name="email">
+            <input type="email" id="email" name="email" placeholder="أدخل بريدك الإلكتروني هنا">
+            <span id="emailError" class="error-message"></span>
         </div>
         <div class="form-group">
             <label for="password">كلمة المرور:</label>
-            <input type="password" id="password" name="password">
+            <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور الخاصة بك">
+            <span id="passwordError" class="error-message"></span>
         </div>
         <button id="loginBtn">تسجيل الدخول</button>
     </div>
@@ -31,27 +251,30 @@
     <!-- صفحة طلب السائق -->
     <div id="orderContainer" style="display:none;">
         <div class="container">
+            <div id="restaurantName" class="restaurant-name" style="display: none;"></div>
+
             <div class="form-group">
                 <label for="customerNumber">رقم الزبون:</label>
-                <input type="text" id="customerNumber" name="customerNumber">
+                <input type="text" id="customerNumber" name="customerNumber" placeholder="  ×××××××××07  ">
+                <span id="customerNumberError" class="error-message"></span>
             </div>
 
-            <!-- الحقل الجديد: سعر الطلب -->
             <div class="form-group">
                 <label for="orderPrice">سعر الطلب:</label>
-                <input type="text" id="orderPrice" name="orderPrice">
+                <input type="text" id="orderPrice" name="orderPrice" placeholder=" أدخل سعر الطلب">
+                <span id="orderPriceError" class="error-message"></span>
             </div>
 
-            <!-- الحقل الجديد: ملاحظة -->
             <div class="form-group">
                 <label for="note">ملاحظة:</label>
-                <input type="text" id="note" name="note">
+                <input type="text" id="note" name="note" placeholder="أدخل أي ملاحظات إضافي  مثل الطلب جاهز او سوف يجهز بعد 15 دقيقة ">
+                <span id="noteError" class="error-message"></span>
             </div>
 
-            <!-- الحقل الجديد: آخر 4 أرقام من الطلب -->
             <div class="form-group">
                 <label for="orderLastFourDigits">اكتب آخر 4 أرقام من الطلب:</label>
-                <input type="text" id="orderLastFourDigits" name="orderLastFourDigits">
+                <input type="text" id="orderLastFourDigits" name="orderLastFourDigits" placeholder="ادخل رقم  واذا لم يكن موجود اكتب 00 فقط">
+                <span id="orderLastFourDigitsError" class="error-message"></span>
             </div>
 
             <div class="form-group">
@@ -59,15 +282,17 @@
                 <select id="location" name="location">
                     <option value="">اختر المنطقة</option>
                 </select>
+                <span id="locationError" class="error-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="price">السعر:</label>
                 <input type="text" id="price" name="price" readonly>
+                <span id="priceError" class="error-message"></span>
             </div>
 
             <button id="submitOrder">طلب السائق</button>
-            <button id="logoutBtn">تسجيل الخروج</button> <!-- زر تسجيل الخروج -->
+            <button id="logoutBtn">تسجيل الخروج</button>
         </div>
 
         <button class="side-button" id="showOrders">عرض سجل الطلبات</button>
@@ -86,9 +311,9 @@
                         <th>رقم الزبون</th>
                         <th>المنطقة</th>
                         <th>السعر</th>
-                        <th>سعر الطلب</th> <!-- إضافة العمود الجديد -->
-                        <th>ملاحظة</th> <!-- إضافة العمود الجديد -->
-                        <th>آخر 4 أرقام من الطلب</th> <!-- إضافة العمود الجديد -->
+                        <th>سعر الطلب</th>
+                        <th>ملاحظة</th>
+                        <th>آخر 4 أرقام من الطلب</th>
                         <th>التاريخ</th>
                     </tr>
                 </thead>
@@ -96,18 +321,10 @@
             </table>
             <button class="close-modal" id="closeModal">إغلاق</button>
         </div>
-
-        <div id="restaurantName" class="restaurant-name" style="display: none;"></div>
     </div>
 
-    <!-- الرسائل التي ستظهر عند نجاح أو فشل الإرسال -->
-    <div id="successMessage" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #4CAF50; color: white; padding: 20px; border-radius: 7px; text-align: center; z-index: 9999;">
-        تم استلام طلبك، سوف يصل السائق خلال 5 دقائق أو أقل.
-    </div>
-
-    <div id="errorMessage" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #f44336; color: white; padding: 20px; border-radius: 7px; text-align: center; z-index: 9999;">
-        حدث خطأ، لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى.
-    </div>
+    <div id="successMessage">تم استلام طلبك، سوف يصل السائق خلال 5 دقائق أو أقل.</div>
+    <div id="errorMessage">حدث خطأ بسبب عدم اتصالك بالإنترنت أو غيرها. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى.</div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
