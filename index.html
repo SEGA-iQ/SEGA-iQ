@@ -30,7 +30,7 @@
         .logo-container {
             text-align: center;
             margin-bottom: 30px;
-            animation: fadeInLogo 1.5s ease-in-out;
+            animation: fadeIn 4s ease-in-out;
         }
 
         .site-logo {
@@ -39,9 +39,13 @@
             filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
         }
 
-        @keyframes fadeInLogo {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+        .site-logo:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         h2 {
@@ -49,6 +53,10 @@
             font-size: 2.5rem;
             color: #444;
             margin-bottom: 25px;
+            background: linear-gradient(90deg, #ff8a00, #e52e71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
         .form-group {
@@ -60,40 +68,55 @@
             color: #666;
         }
 
-        input, select, textarea, button {
+        input, select, textarea {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             margin-top: 5px;
             border: 1px solid #ddd;
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s ease-in-out;
         }
 
-        input::placeholder, textarea::placeholder {
-            color: #888;
+        input::placeholder {
+            color: #aaa;
             font-style: italic;
         }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: #28a745;
+        input:focus {
+            border-color: #007bff;
             outline: none;
         }
 
         button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 1.2rem;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            text-align: center;
+        }
+
+        #loginBtn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #loginBtn:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
         }
 
         #submitOrder {
             background-color: #28a745;
             color: white;
-            width: 100%;
-            margin: 20px 0;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 10px;
+            margin: 20px auto;
+            display: block;
+            width: 60%;
         }
 
         #submitOrder:hover {
@@ -104,32 +127,26 @@
         #logoutBtn {
             background-color: #dc3545;
             color: white;
-            position: absolute;
+            position: fixed;
             bottom: 20px;
             left: 20px;
-            width: 150px;
-            border-radius: 10px;
+            width: auto;
+            padding: 10px 20px;
         }
 
-        #logoutBtn:hover {
-            background-color: #c82333;
+        .side-button {
+            background-color: #ff8a00;
+            color: white;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            width: auto;
         }
 
-        .restaurant-name {
-            text-align: center;
-            font-size: 2rem;
-            color: #444;
-            margin: 20px 0;
-            font-weight: bold;
-            background: linear-gradient(90deg, #ff8a00, #e52e71);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInText 1s ease-in-out;
-        }
-
-        @keyframes fadeInText {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .side-button:hover {
+            background-color: #e52e71;
+            transform: translateY(-3px);
         }
 
         .orders-modal {
@@ -147,10 +164,10 @@
         }
 
         .close-modal {
-            background-color: #ffc107;
-            color: black;
+            background-color: #dc3545;
+            color: white;
             margin-top: 20px;
-            border-radius: 10px;
+            width: 100%;
         }
 
         table {
@@ -205,22 +222,32 @@
             color: white;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
+        @media only screen and (max-width: 768px) {
             .container {
                 width: 95%;
                 padding: 15px;
             }
 
-            #submitOrder {
-                width: 100%;
+            h2 {
+                font-size: 2rem;
             }
 
-            #logoutBtn {
+            button {
+                font-size: 1rem;
+            }
+
+            #submitOrder {
                 width: 100%;
-                left: 0;
+                margin-top: 10px;
+            }
+
+            #logoutBtn, .side-button {
+                position: relative;
                 bottom: 0;
-                border-radius: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                margin-top: 10px;
             }
         }
     </style>
@@ -234,7 +261,7 @@
             <img src="logo.png" alt="Logo" class="site-logo">
         </div>
 
-        <h2>تسجيل دخول المطعم</h2>
+        <h2>دلفري العراق</h2>
         <div class="form-group">
             <label for="email">البريد الإلكتروني:</label>
             <input type="email" id="email" name="email" placeholder="أدخل بريدك الإلكتروني هنا">
@@ -251,29 +278,29 @@
     <!-- صفحة طلب السائق -->
     <div id="orderContainer" style="display:none;">
         <div class="container">
-            <div id="restaurantName" class="restaurant-name" style="display: none;"></div>
+            <div id="restaurantName" class="restaurant-name" style="display: none;">اسم المطعم</div>
 
             <div class="form-group">
                 <label for="customerNumber">رقم الزبون:</label>
-                <input type="text" id="customerNumber" name="customerNumber" placeholder="  ×××××××××07  ">
+                <input type="text" id="customerNumber" name="customerNumber" placeholder="×××××××××07" >
                 <span id="customerNumberError" class="error-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="orderPrice">سعر الطلب:</label>
-                <input type="text" id="orderPrice" name="orderPrice" placeholder=" أدخل سعر الطلب">
+                <input type="text" id="orderPrice" name="orderPrice" placeholder="أدخل سعر الطلب">
                 <span id="orderPriceError" class="error-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="note">ملاحظة:</label>
-                <input type="text" id="note" name="note" placeholder="أدخل أي ملاحظات إضافي  مثل الطلب جاهز او سوف يجهز بعد 15 دقيقة ">
+                <input type="text" id="note" name="note" placeholder="أدخل ملاحظة (اختياري)">
                 <span id="noteError" class="error-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="orderLastFourDigits">اكتب آخر 4 أرقام من الطلب:</label>
-                <input type="text" id="orderLastFourDigits" name="orderLastFourDigits" placeholder="ادخل رقم  واذا لم يكن موجود اكتب 00 فقط">
+                <input type="text" id="orderLastFourDigits" name="orderLastFourDigits" placeholder="آخر 4 أرقام من الطلب">
                 <span id="orderLastFourDigitsError" class="error-message"></span>
             </div>
 
@@ -287,7 +314,7 @@
 
             <div class="form-group">
                 <label for="price">السعر:</label>
-                <input type="text" id="price" name="price" readonly>
+                <input type="text" id="price" name="price" readonly placeholder="سعر الطلب سيتم تحديده تلقائيًا">
                 <span id="priceError" class="error-message"></span>
             </div>
 
@@ -331,3 +358,4 @@
     <script src="script.js"></script> <!-- ربط ملف JavaScript -->
 </body>
 </html>
+
