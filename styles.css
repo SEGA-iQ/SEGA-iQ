@@ -56,6 +56,7 @@ label {
     color: #666;
     font-family: 'Cairo', sans-serif;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    text-align: right;
 }
 
 input, select, textarea, button {
@@ -66,8 +67,16 @@ input, select, textarea, button {
     border-radius: 6px;
     box-sizing: border-box;
     font-size: 1rem;
-    text-align: left; /* تغيير اتجاه الكتابة */
     font-family: 'Cairo', sans-serif;
+    direction: ltr; /* توجيه الإدخال بشكل افتراضي لليسار */
+    text-align: left; /* محاذاة النصوص لليسار */
+}
+
+body[dir="rtl"] input, 
+body[dir="rtl"] select, 
+body[dir="rtl"] textarea {
+    text-align: right; /* محاذاة النصوص لليمين عند استخدام اللغة العربية */
+    direction: rtl; /* توجيه الإدخال لليمين عند استخدام اللغة العربية */
 }
 
 button {
@@ -137,17 +146,39 @@ button {
 
 .orders-modal {
     position: fixed;
-    top: 10%;
-    right: 10%;
-    width: 80%;
-    max-height: 80%;
+    top: 5%;
+    right: 5%;
+    width: 90%;
+    max-height: 90%;
     overflow-y: auto;
     background-color: #ffffff;
-    padding: 25px;
+    padding: 15px;
     border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
+
+/* تحسين التوافق مع الهواتف المحمولة */
+@media only screen and (max-width: 768px) {
+    .orders-modal {
+        width: 95%;
+        top: 5%;
+        padding: 10px;
+        font-size: 0.8rem; /* تقليل حجم النص */
+    }
+
+    #ordersTable {
+        width: 100%;
+        display: table;
+    }
+
+    #ordersTable th, #ordersTable td {
+        padding: 8px;
+        font-size: 0.9rem; /* تقليل حجم النص داخل الجدول */
+        text-align: center;
+    }
+}
+
 
 .close-modal {
     background-color: #dc3545;
@@ -168,6 +199,12 @@ th, td {
     text-align: center;
     border-bottom: 1px solid #ddd;
     font-family: 'Cairo', sans-serif;
+    text-align: left;
+}
+
+body[dir="rtl"] th, 
+body[dir="rtl"] td {
+    text-align: right;
 }
 
 th {
@@ -187,6 +224,11 @@ tr:hover {
     color: red;
     font-size: 0.9rem;
     display: none;
+    text-align: left;
+}
+
+body[dir="rtl"] .error-message {
+    text-align: right;
 }
 
 #successMessage, #errorMessage {
@@ -241,4 +283,118 @@ tr:hover {
         width: 100%;
         margin-top: 10px;
     }
+}
+
+#serviceFeeTotalContainer {
+    position: fixed;
+    top: 8px; /* تقليل المسافة من أعلى الشاشة */
+    right: 8px; /* تقليل المسافة من اليمين */
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 8px; /* تقليل المسافات الداخلية */
+    border-radius: 8px; /* تقليل الحدود المستديرة */
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-width: 70%; /* تقليل العرض الأقصى */
+    width: auto;
+    font-family: 'Cairo', sans-serif; /* تطبيق الخط */
+    transition: all 0.3s ease-in-out;
+    font-size: 12px; /* تقليل حجم النص داخل الحاوية */
+}
+
+/* تحسين العرض على شاشات الهواتف المحمولة */
+@media (max-width: 768px) {
+    #serviceFeeTotalContainer {
+        top: 4px;
+        right: 4px;
+        padding: 6px; /* تقليل المسافات أكثر */
+        font-size: 12px; /* تصغير حجم النص */
+        max-width: 85%;
+    }
+
+    #serviceFeeTotalContainer h4 {
+        font-size: 14px; /* تقليل حجم العنوان */
+    }
+
+    #serviceFeeTotalContainer p {
+        font-size: 12px; /* تصغير النص في الفقرة */
+    }
+}
+
+/* تحسين العرض على شاشات أصغر */
+@media (max-width: 480px) {
+    #serviceFeeTotalContainer {
+        top: 3px;
+        right: 3px;
+        padding: 5px; /* تقليل المسافات الداخلية أكثر */
+        font-size: 10px; /* تقليل حجم النص ليكون أصغر */
+        max-width: 90%;
+    }
+
+    #serviceFeeTotalContainer h4 {
+        font-size: 12px; /* تصغير العنوان */
+    }
+
+    #serviceFeeTotalContainer p {
+        font-size: 10px; /* تصغير النص داخل الفقرة */
+    }
+}
+
+/* تنسيق نافذة التأكيد المخصصة */
+.modal {
+    display: none; /* مخفية بشكل افتراضي */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* خلفية شبه شفافة */
+}
+
+.modal-content {
+    background-color: #dc3545; /* لون الخلفية أحمر */
+    color: white; /* لون النص أبيض */
+    margin: 15% auto; /* تتمركز في منتصف الشاشة */
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 300px; /* عرض ثابت */
+    text-align: center;
+    border: none;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.modal-content button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: white;
+    position: relative; /* لجعل زر نعم يتحرك */
+}
+
+/* زر نعم باللون الأحمر */
+#confirmLogoutBtn {
+    background-color: #d9534f;
+}
+
+/* زر لا باللون الأخضر */
+#cancelLogoutBtn {
+    background-color: #28a745;
+}
+
+#confirmLogoutBtn:hover {
+    background-color: #c9302c;
+}
+
+#cancelLogoutBtn:hover {
+    background-color: #218838;
 }
