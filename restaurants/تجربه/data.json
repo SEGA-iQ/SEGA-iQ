@@ -1,7 +1,7 @@
 {
     "credentials": {
-        "email": "test@gmail.com",
-        "password": "7667"
+        "email": "test1@gmail.com",
+        "password": "123"
     },
     "areas": [
         { "name": "جميع مناطق شارع فلسطين", "price": "3000" },
@@ -11,6 +11,6 @@
     ],
     "restaurantDetails": {
         "location": "https://maps.app.goo.gl/gsSFskoXDHapmRs67",
-        "serviceFee": 500
+        "serviceFee": 1500
     }
 }
