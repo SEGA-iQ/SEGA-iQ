@@ -3,13 +3,19 @@
 <head><link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام طلبات المطعم</title>
+    <title>دلفري العراق</title>
+    <!-- ربط ملفات CSS -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cairo&display=swap">
 </head><link rel="stylesheet" href="styles.css">
 <body>
+
+    <!-- رسالة الصيانة -->
+    <div id="maintenanceMessage" style="display: none; position: fixed; top: 0; left: 0; width: 100%; background-color: #28a745; color: #fff; text-align: center; padding: 8px; font-weight: bold; font-size: 1em; border-bottom: 2px solid #fff; z-index: 9999; border-radius: 0 0 10px 10px;">
+        <p style="margin: 0;">مرحبا بك في دلفري العراق! <br> أسرع خدمة توصيل موثوقة في بغداد.</p>
+    </div>
 
     <!-- صفحة تسجيل الدخول -->
     <div class="container" id="loginContainer">
@@ -35,37 +41,14 @@
     <!-- صفحة طلب السائق -->
     <div id="orderContainer" style="display:none;">
         <div class="container">
-            <!--      -->
+            <!-- اسم المطعم -->
             <div class="form-row">
                 <div class="col-12 text-center">
-                    <div id="restaurantName" class="restaurant-name">         </div>
+                    <div id="restaurantName" class="restaurant-name">دلفري العراق</div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="customerNumber">رقم الزبون:</label>
-                <input type="text" id="customerNumber" name="customerNumber" placeholder="×××××××××07">
-                <span id="customerNumberError" class="error-message"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="orderPrice">سعر الطلب:</label>
-                <input type="text" id="orderPrice" name="orderPrice" placeholder="أدخل سعر الطلب">
-                <span id="orderPriceError" class="error-message"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="note">ملاحظة:</label>
-                <input type="text" id="note" name="note" placeholder="مثل: طلب جاهز أو بعد 10 دقائق يجهز">
-                <span id="noteError" class="error-message"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="orderLastFourDigits">اكتب آخر 4 أرقام من الطلب:</label>
-                <input type="text" id="orderLastFourDigits" name="orderLastFourDigits" placeholder="آخر 4 أرقام من الطلب">
-                <span id="orderLastFourDigitsError" class="error-message"></span>
-            </div>
-
+            <!-- اختيار المنطقة -->
             <div class="form-group">
                 <label for="location">اسم المنطقة:</label>
                 <select id="location" name="location">
@@ -74,26 +57,65 @@
                 <span id="locationError" class="error-message"></span>
             </div>
 
+            <!-- السعر -->
             <div class="form-group">
                 <label for="price">السعر:</label>
                 <input type="text" id="price" name="price" readonly placeholder="سعر الطلب سيتم تحديده تلقائيًا">
                 <span id="priceError" class="error-message"></span>
             </div>
 
+            <!-- رقم الزبون -->
+            <div class="form-group">
+                <label for="customerNumber">رقم الزبون:</label>
+                <input type="text" id="customerNumber" name="customerNumber" placeholder="07×××××××××">
+                <span id="customerNumberError" class="error-message"></span>
+            </div>
+
+            <!-- سعر الطلب -->
+            <div class="form-group">
+                <label for="orderPrice">سعر الطلب:</label>
+                <input type="text" id="orderPrice" name="orderPrice" placeholder="أدخل سعر الطلب">
+                <span id="orderPriceError" class="error-message"></span>
+            </div>
+
+            <!-- رقم الطلب -->
+            <div class="form-group">
+                <label for="orderLastFourDigits">اكتب آخر 4 أرقام من الطلب:</label>
+                <input type="text" id="orderLastFourDigits" name="orderLastFourDigits" placeholder="آخر 4 أرقام من الطلب">
+                <span id="orderLastFourDigitsError" class="error-message"></span>
+            </div>
+
+            <!-- ملاحظة -->
+            <div class="form-group">
+                <label for="note">ملاحظة:</label>
+                <input type="text" id="note" name="note" placeholder="مثل: طلب جاهز أو بعد 10 دقائق يجهز">
+                <span id="noteError" class="error-message"></span>
+            </div>
+
+            <!-- رسوم الخدمة -->
+            <div class="form-group">
+                <label for="serviceFee">رسوم الخدمة:</label>
+                <input type="text" id="serviceFee" name="serviceFee" readonly value="500 دينار">
+            </div>
+
             <button id="submitOrder">طلب السائق</button>
-            
-            <!-- اسم المطعم بين الأزرار -->
-            <div class="form-row">
+
+            <!-- أزرار إضافية -->
+            <div class="form-row mt-4">
                 <div class="col-6">
                     <button id="logoutBtn">تسجيل الخروج</button>
                 </div>
-                <div class="col-6">
-                    <div id="restaurantName" class="restaurant-name">         </div>
+                <div class="col-6 text-right">
+                    <button class="side-button" id="showOrders">عرض سجل الطلبات</button>
                 </div>
             </div>
         </div>
 
-        <button class="side-button" id="showOrders">عرض سجل الطلبات</button>
+        <!-- عنصر لعرض مجموع رسوم الخدمة -->
+        <div id="serviceFeeTotalContainer">
+            <h4>مجموع رسوم الخدمة:</h4>
+            <p id="serviceFeeTotal">0 دينار</p>
+        </div>
 
         <div class="orders-modal" id="ordersModal" style="display:none;">
             <h3>سجل الطلبات</h3>
@@ -110,6 +132,7 @@
                         <th>المنطقة</th>
                         <th>السعر</th>
                         <th>سعر الطلب</th>
+                        <th>رسوم الخدمة</th>
                         <th>ملاحظة</th>
                         <th>آخر 4 أرقام من الطلب</th>
                         <th>التاريخ</th>
@@ -120,12 +143,35 @@
             <button class="close-modal" id="closeModal">إغلاق</button>
         </div>
     </div>
+    
+    
 
-    <div id="successMessage">تم استلام طلبك، سوف يصل السائق 10 دقائق أو أقل.</div>
-    <div id="errorMessage">حدث خطأ بسبب عدم اتصالك بالإنترنت أو غيرها. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى.</div>
+    <div id="successMessage" style="display:none;">تم استلام طلبك، سوف يصل السائق 10 دقائق أو أقل.</div>
+    <div id="errorMessage" style="display:none;">حدث خطأ بسبب عدم اتصالك بالإنترنت أو غيرها. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى.</div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="script.js"></script> <!-- ربط ملف JavaScript -->
+
+    <!-- تشغيل رسالة الصيانة عند تحميل الصفحة -->
+    <script>
+        $(document).ready(function() {
+            // إظهار رسالة الصيانة
+            $('#maintenanceMessage').show();
+        });
+    </script>
+   
 </body>
 </html>
+
+<!-- نافذة التأكيد المخصصة -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
+        <button id="cancelLogoutBtn">لا</button>
+        <button id="confirmLogoutBtn">نعم</button>
+    </div>
+</div>
+
+
+
