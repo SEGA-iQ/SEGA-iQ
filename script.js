@@ -2,6 +2,7 @@
 const botToken = '7147928118:AAHYrSRDn5lgQ_hCh1S6pAWoAB9Mtc0rJTc';
 const chatId1 = '@segabaghdad'; // القناة الأولى
 const chatId2 = '@crada_iraq'; // القناة الثانية
+const currentDataVersion = '2.0'; // قم بتغيير الإصدار عند تحديث البيانات
 
 let currentRestaurant = JSON.parse(localStorage.getItem('currentRestaurant')) || null;
 
@@ -67,76 +68,112 @@ async function loadRestaurantData(restaurantName) {
     }
 }
 
+
+// دالة للتحقق من الإصدار وتحديث بيانات localStorage إذا لزم الأمر
+function checkAndUpdateLocalStorage() {
+    const storedVersion = localStorage.getItem('dataVersion');
+    
+    if (storedVersion !== currentDataVersion) {
+        // إذا كان الإصدار غير متطابق، قم بتحديث البيانات
+        localStorage.clear(); // مسح البيانات القديمة
+        localStorage.setItem('dataVersion', currentDataVersion); // تحديث الإصدار في localStorage
+        currentRestaurant = null; // إعادة تعيين المطعم الحالي
+        console.log('تم تحديث بيانات localStorage.');
+    }
+}
+
+// استدعاء الدالة للتحقق وتحديث البيانات عند تحميل الصفحة
+checkAndUpdateLocalStorage();
+
 // دالة للتحقق من صحة الجلسة
 async function validateSession() {
-    if (!currentRestaurant) return false;
+    if (!currentRestaurant) return { isValid: false };
 
     try {
-        const { credentials } = await loadRestaurantData(currentRestaurant.name);
+        const data = await loadRestaurantData(currentRestaurant.name);
+
+        // التحقق من حالة الإيقاف
+        if (data.isSuspended) {
+            if (data.forceLogout) {
+                // طرد المستخدم وإظهار رسالة السبب
+                logout();
+                showErrorMessage(`تم إيقاف حسابك. السبب: ${data.suspensionReason}`);
+                return { isValid: false, isSuspended: true };
+            } else {
+                // فقط إظهار رسالة السبب بدون طرد المستخدم
+                showErrorMessage(`لا يمكنك إرسال الطلبات لأن حسابك موقوف. السبب: ${data.suspensionReason}`);
+                return { isValid: true, isSuspended: true };
+            }
+        }
+
         // التحقق من تطابق البريد الإلكتروني وكلمة المرور
-        if (credentials.email.toLowerCase() === currentRestaurant.restaurantDetails.credentials.email.toLowerCase() &&
-            credentials.password === currentRestaurant.restaurantDetails.credentials.password) {
-            return true;
+        if (data.credentials.email.toLowerCase() === currentRestaurant.restaurantDetails.credentials.email.toLowerCase() &&
+            data.credentials.password === currentRestaurant.restaurantDetails.credentials.password) {
+            return { isValid: true, isSuspended: false };
         } else {
             // تسجيل الخروج إذا كانت كلمة المرور غير صحيحة
             logout();
             showErrorMessage('تم تغيير كلمة المرور. يرجى تسجيل الدخول مجددًا.');
-            return false;
+            return { isValid: false };
         }
     } catch (error) {
         console.error('خطأ في التحقق من الجلسة:', error);
-        return false;
+        return { isValid: false };
     }
 }
+
 
 // تحديث دالة تسجيل الدخول لتخزين بيانات الاعتماد بشكل صحيح
 async function login(email, password) {
     const emailLower = email.toLowerCase().trim();
 
-    // تحقق من أن البيانات المدخلة ليست فارغة
     if (!emailLower || !password) {
         showErrorMessage('يرجى إدخال البريد الإلكتروني وكلمة المرور.');
         return;
     }
 
-        // إظهار علامة التحميل
-        document.getElementById('loadingIndicator').style.display = 'block';
+    document.getElementById('loadingIndicator').style.display = 'block';
 
-        const allRestaurants = [...restaurants, ...restaurants2];
-        for (const restaurantName of allRestaurants) {
-            try {
-                const { credentials, areas, restaurantDetails } = await loadRestaurantData(restaurantName);
-                if (credentials.email.toLowerCase() === emailLower && credentials.password === password) {
-                    currentRestaurant = {
-                        name: restaurantName,
-                        areas,
-                        restaurantDetails: {
-                            credentials: {
-                                email: credentials.email,
-                                password: credentials.password
-                            },
-                            ...restaurantDetails
-                        }
-                    };
-                    localStorage.setItem('currentRestaurant', JSON.stringify(currentRestaurant));
-    
-                    initializeOrderPage();
-                    updateServiceFeeTotal();
-                    showSuccessMessage('تم تسجيل الدخول بنجاح.');
-                    document.getElementById('loadingIndicator').style.display = 'none'; // إخفاء علامة التحميل
+    for (const restaurantName of allRestaurants) {
+        try {
+            const data = await loadRestaurantData(restaurantName);
+            if (data.credentials.email.toLowerCase() === emailLower && data.credentials.password === password) {
+                // تحقق من حالة الإيقاف
+                if (data.isSuspended) {
+                    showErrorMessage(`تم إيقاف حساب هذا المطعم. السبب: ${data.suspensionReason}`);
+                    document.getElementById('loadingIndicator').style.display = 'none';
                     return;
                 }
-            } catch (error) {
-                console.error('خطأ في تسجيل الدخول:', error);
-            }
-        }
-    
-        // إخفاء علامة التحميل بعد محاولة تسجيل الدخول
-        document.getElementById('loadingIndicator').style.display = 'none';
-        showErrorMessage('بيانات الدخول غير صحيحة. يرجى التحقق من البريد الإلكتروني وكلمة المرور.');
-    }
-    
 
+                currentRestaurant = {
+                    name: restaurantName,
+                    areas: data.areas,
+                    restaurantDetails: {
+                        credentials: {
+                            email: data.credentials.email,
+                            password: data.credentials.password
+                        },
+                        ...data.restaurantDetails
+                    }
+                };
+
+                localStorage.setItem('currentRestaurant', JSON.stringify(currentRestaurant));
+                localStorage.setItem('dataVersion', currentDataVersion); // تحديث الإصدار في localStorage
+
+                initializeOrderPage();
+                updateServiceFeeTotal();
+                showSuccessMessage('تم تسجيل الدخول بنجاح.');
+                document.getElementById('loadingIndicator').style.display = 'none';
+                return;
+            }
+        } catch (error) {
+            console.error('خطأ في تسجيل الدخول:', error);
+        }
+    }
+
+    document.getElementById('loadingIndicator').style.display = 'none';
+    showErrorMessage('بيانات الدخول غير صحيحة. يرجى التحقق من البريد الإلكتروني وكلمة المرور.');
+}
 
 // دالة لتهيئة صفحة الطلب بعد تسجيل الدخول
 function initializeOrderPage() {
@@ -237,7 +274,15 @@ async function sendMessageToTelegram(order) {
 
 // دالة لمعالجة إرسال الطلب
 async function handleOrderSubmission() {
-    if (!await validateSession()) return; // التحقق من الجلسة أولاً
+    // التحقق من صحة الجلسة
+    const sessionResult = await validateSession();
+    if (!sessionResult.isValid) return; // إذا كان الحساب موقوفًا وتم طرد المستخدم، الخروج من الدالة
+
+    // إذا كان الحساب موقوفًا ولكن بدون طرد المستخدم، فقط إظهار رسالة ومنع إرسال الطلب
+    if (sessionResult.isSuspended) {
+        showErrorMessage(` ${data.suspensionReason}`);
+        return;
+    }
 
     const submitButton = document.getElementById('submitOrder');
     submitButton.disabled = true;  // تعطيل الزر
@@ -516,22 +561,8 @@ function showLogoutConfirmation() {
 
     const confirmBtn = document.getElementById('confirmLogoutBtn');
 
-    // دالة لتحريك الزر إلى مكان عشوائي داخل الإطار الأحمر
-    function moveButtonRandomly() {
-        const modalContent = document.querySelector('.modal-content');
-        const maxWidth = modalContent.clientWidth - confirmBtn.clientWidth - 20; // تحديد أقصى عرض للحركة
-        const maxHeight = modalContent.clientHeight - confirmBtn.clientHeight - 20; // تحديد أقصى ارتفاع للحركة
-        
-        const randomX = Math.floor(Math.random() * maxWidth / 4) + 10; // تقليل المسافة الأفقية للحركة
-        const randomY = Math.floor(Math.random() * maxHeight / 4) + 10; // تقليل المسافة العمودية للحركة
-        
-        confirmBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-    }
-
-    // عند محاولة النقر على زر "نعم"، تحركه بشكل عشوائي داخل الإطار
-    confirmBtn.onmouseover = function() {
-        moveButtonRandomly();
-    };
+    // تعليق أو إزالة تحريك الزر عشوائياً
+    confirmBtn.onmouseover = null; // هذا سيمنع الزر من التحرك
 
     // عند النقر على زر "نعم" بعد محاولة الوصول إليه
     confirmBtn.onclick = function() {
@@ -544,7 +575,6 @@ function showLogoutConfirmation() {
         modal.style.display = 'none';
     };
 }
-
 
 // دالة لتسجيل الخروج
 function logout() {
