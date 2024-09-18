@@ -1,8 +1,11 @@
-// تعريف المتغيرات الأساس// تعريف المتغيرات الأساسية
-const botToken = '2094023494:AAEpX9YYAv0mWx5qR3a2HJV5g_r9XbTrjNo';
-const chatId = '@segabaghdad';
+// تعريف المتغيرات الأساسية
+const botToken = '7147928118:AAHYrSRDn5lgQ_hCh1S6pAWoAB9Mtc0rJTc';
+const chatId1 = '@segabaghdad'; // القناة الأولى
+const chatId2 = '@crada_iraq'; // القناة الثانية
+
 let currentRestaurant = JSON.parse(localStorage.getItem('currentRestaurant')) || null;
 
+// قائمة المطاعم للقناة الأولى
 const restaurants = [
     'ازبريي شارع فلسطين',
     'كوددت',
@@ -28,19 +31,33 @@ const restaurants = [
     'AFC القاهرة',
     'فلافل لبنان شارع فلسطين2',
     'مشويات ابووطن شارع فلسطين',
+    'كصابة المرتضئ شارع فلسطين',
+    'مشويات أسهيل شارع فلسطين',
+    'عالم الحليب1 شارع فلسطين',
+    'كيف روز شارع فلسطين',
     'تجربه'
     
 ];
 
-// ترتيب المطاعم أبجدياً
-const sortedRestaurants = restaurants.sort((a, b) => a.localeCompare(b, 'ar'));
+// قائمة المطاعم للقناة الثانية
+const restaurants2 = [
+    'testc',
+    'مشويات ابووطن كرادة',
+    'فايرفاير الكرادة'
+    // أضف المزيد من المطاعم هنا
+];
 
-console.log(sortedRestaurants);
+// دمج المطاعم في قائمة واحدة وإزالة التكرار إن وجد
+const allRestaurants = [...new Set([...restaurants, ...restaurants2])];
+
+// ترتيب المطاعم أبجدياً
+const sortedRestaurants = allRestaurants.sort((a, b) => a.localeCompare(b, 'ar'));
 
 // دالة لتحميل بيانات المطعم
 async function loadRestaurantData(restaurantName) {
     try {
-        const response = await fetch(`restaurants/${restaurantName}/data.json`);
+        const fileType = restaurants.includes(restaurantName) ? 'restaurants' : 'restaurants2';
+        const response = await fetch(`${fileType}/${restaurantName}/data.json`);
         if (!response.ok) throw new Error('حدث خطأ أثناء تحميل بيانات المطعم');
         const data = await response.json();
         return data;
@@ -50,31 +67,75 @@ async function loadRestaurantData(restaurantName) {
     }
 }
 
-// دالة لتسجيل الدخول
-async function login(email, password) {
-    const emailLower = email.toLowerCase();  // تحويل البريد الإلكتروني المدخل إلى أحرف صغيرة
-    for (const restaurantName of restaurants) {
-        try {
-            const { credentials, areas, restaurantDetails } = await loadRestaurantData(restaurantName);
-            if (credentials.email.toLowerCase() === emailLower && credentials.password === password) {  // تحويل البريد الإلكتروني المحفوظ إلى أحرف صغيرة أيضًا
-                currentRestaurant = { name: restaurantName, areas, restaurantDetails };
-                localStorage.setItem('currentRestaurant', JSON.stringify(currentRestaurant));
-                
-                // تهيئة صفحة الطلبات
-                initializeOrderPage();
+// دالة للتحقق من صحة الجلسة
+async function validateSession() {
+    if (!currentRestaurant) return false;
 
-                // تحديث مجموع رسوم الخدمة بعد تسجيل الدخول
-                updateServiceFeeTotal();
-
-                showSuccessMessage('تم تسجيل الدخول بنجاح.');
-                return;
-            }
-        } catch (error) {
-            console.error('خطأ:', error);
+    try {
+        const { credentials } = await loadRestaurantData(currentRestaurant.name);
+        // التحقق من تطابق البريد الإلكتروني وكلمة المرور
+        if (credentials.email.toLowerCase() === currentRestaurant.restaurantDetails.credentials.email.toLowerCase() &&
+            credentials.password === currentRestaurant.restaurantDetails.credentials.password) {
+            return true;
+        } else {
+            // تسجيل الخروج إذا كانت كلمة المرور غير صحيحة
+            logout();
+            showErrorMessage('تم تغيير كلمة المرور. يرجى تسجيل الدخول مجددًا.');
+            return false;
         }
+    } catch (error) {
+        console.error('خطأ في التحقق من الجلسة:', error);
+        return false;
     }
-    showErrorMessage('بيانات الدخول غير صحيحة.');
 }
+
+// تحديث دالة تسجيل الدخول لتخزين بيانات الاعتماد بشكل صحيح
+async function login(email, password) {
+    const emailLower = email.toLowerCase().trim();
+
+    // تحقق من أن البيانات المدخلة ليست فارغة
+    if (!emailLower || !password) {
+        showErrorMessage('يرجى إدخال البريد الإلكتروني وكلمة المرور.');
+        return;
+    }
+
+        // إظهار علامة التحميل
+        document.getElementById('loadingIndicator').style.display = 'block';
+
+        const allRestaurants = [...restaurants, ...restaurants2];
+        for (const restaurantName of allRestaurants) {
+            try {
+                const { credentials, areas, restaurantDetails } = await loadRestaurantData(restaurantName);
+                if (credentials.email.toLowerCase() === emailLower && credentials.password === password) {
+                    currentRestaurant = {
+                        name: restaurantName,
+                        areas,
+                        restaurantDetails: {
+                            credentials: {
+                                email: credentials.email,
+                                password: credentials.password
+                            },
+                            ...restaurantDetails
+                        }
+                    };
+                    localStorage.setItem('currentRestaurant', JSON.stringify(currentRestaurant));
+    
+                    initializeOrderPage();
+                    updateServiceFeeTotal();
+                    showSuccessMessage('تم تسجيل الدخول بنجاح.');
+                    document.getElementById('loadingIndicator').style.display = 'none'; // إخفاء علامة التحميل
+                    return;
+                }
+            } catch (error) {
+                console.error('خطأ في تسجيل الدخول:', error);
+            }
+        }
+    
+        // إخفاء علامة التحميل بعد محاولة تسجيل الدخول
+        document.getElementById('loadingIndicator').style.display = 'none';
+        showErrorMessage('بيانات الدخول غير صحيحة. يرجى التحقق من البريد الإلكتروني وكلمة المرور.');
+    }
+    
 
 
 // دالة لتهيئة صفحة الطلب بعد تسجيل الدخول
@@ -99,7 +160,7 @@ function initializeOrderPage() {
     });
 
     // تحديث رسوم الخدمة في صفحة الطلب بعد تسجيل الدخول
-    document.getElementById('serviceFee').value = `${currentRestaurant.restaurantDetails.serviceFee || 500} دينار`;
+    document.getElementById('serviceFee').value = `${currentRestaurant.restaurantDetails.serviceFee} دينار`;
 }
 
 
@@ -113,7 +174,7 @@ function saveOrder(order) {
 }
 
 
-// دالة لإرسال رسالة إلى Telegram
+// تعديل دالة إرسال الرسالة إلى Telegram لتحديد القناة
 async function sendMessageToTelegram(order) {
     const date = new Date(order.date);
     const formattedDate = date.toLocaleDateString('ar-IQ', {
@@ -147,6 +208,9 @@ async function sendMessageToTelegram(order) {
 *🕒 الوقت:* ${formattedTime}
 `;
 
+    // تحديد قناة الإرسال بناءً على المطعم
+    const channelId = restaurants.includes(currentRestaurant.name) ? chatId1 : chatId2;
+
     try {
         const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
             method: 'POST',
@@ -154,7 +218,7 @@ async function sendMessageToTelegram(order) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                chat_id: chatId,
+                chat_id: channelId,
                 text: message,
                 parse_mode: 'Markdown'
             })
@@ -170,20 +234,31 @@ async function sendMessageToTelegram(order) {
 }
 
 
+
 // دالة لمعالجة إرسال الطلب
 async function handleOrderSubmission() {
+    if (!await validateSession()) return; // التحقق من الجلسة أولاً
+
+    const submitButton = document.getElementById('submitOrder');
+    submitButton.disabled = true;  // تعطيل الزر
+
+    showLoadingIndicator();  // إظهار شاشة التحميل
+
+    // جمع بيانات النموذج
     const customerNumber = document.getElementById('customerNumber').value.trim();
     const location = document.getElementById('location').value;
     const price = document.getElementById('price').value.trim();
     const orderPrice = document.getElementById('orderPrice').value.trim();
     const note = document.getElementById('note').value.trim();
     const orderDigits = document.getElementById('orderLastFourDigits').value.trim();
-    
-    // الحصول على رسوم الخدمة الخاصة بالمطعم
-    const serviceFee = currentRestaurant.restaurantDetails.serviceFee || 500; // استخدام 500 دينار كقيمة افتراضية إذا لم توجد رسوم خدمة
-    
-    // التحقق من صحة البيانات المدخلة
-    if (!validateOrderForm(customerNumber, location, price, orderPrice, orderDigits)) return;
+
+    const serviceFee = currentRestaurant.restaurantDetails.serviceFee || 0;
+
+    if (!validateOrderForm(customerNumber, location, price, orderPrice, orderDigits)) {
+        hideLoadingIndicator();  // إخفاء شاشة التحميل
+        submitButton.disabled = false;  // إعادة تفعيل الزر
+        return;
+    }
 
     const order = {
         customerNumber,
@@ -192,7 +267,7 @@ async function handleOrderSubmission() {
         orderPrice,
         note,
         orderDigits,
-        serviceFee,  // إضافة رسوم الخدمة الخاصة بالمطعم
+        serviceFee,
         date: new Date(),
         restaurantDetails: currentRestaurant.restaurantDetails
     };
@@ -201,13 +276,12 @@ async function handleOrderSubmission() {
     await sendMessageToTelegram(order);
     saveOrder(order);
 
-    // تحديث مجموع رسوم الخدمة
-    updateServiceFeeTotal();
-
-    // تنظيف الحقول بعد الإرسال الناجح
+    updateServiceFeeTotal();  // تحديث مجموع رسوم الخدمة
     resetOrderForm();
-}
 
+    hideLoadingIndicator();  // إخفاء شاشة التحميل
+    submitButton.disabled = false;  // إعادة تفعيل الزر
+}
 
 // دالة للتحقق من صحة نموذج الطلب
 function validateOrderForm(customerNumber, location, price, orderPrice, orderDigits) {
@@ -301,6 +375,7 @@ $(document).ready(function() {
 });
 
 
+
 // دوال لعرض رسائل النجاح والخطأ
 function showSuccessMessage(message) {
     const successMessage = document.getElementById('successMessage');
@@ -320,6 +395,14 @@ function showErrorMessage(message) {
     }, 6000);
 }
 
+
+function showLoadingIndicator() {
+    document.getElementById('loadingIndicator').style.display = 'block';
+}
+
+function hideLoadingIndicator() {
+    document.getElementById('loadingIndicator').style.display = 'none';
+}
 
 
 // دالة لعرض سجل الطلبات
