@@ -1,20 +1,20 @@
 {
     "credentials": {
-        "email": "Abw-watan@Delivery.iq",
-        "password": "76667"
-    },
+        "email": "firefire@delevry.iq",
+        "password": "7776"
+     },
     "areas": [
 	{ "name": "جميع مناطق شارع فلسطين", "price": "2000" },
 	{ "name": "النهضة", "price": "3000" },
-	{ "name": "القاهرة المؤال", "price": "3000" },
+	{ "name": "القاهرة المؤال", "price": "2000" },
 	{ "name": "القاهرة الظباط", "price": "3000" },
 	{ "name": "جميلة", "price": "3000" },
 	{ "name": "الاعظمية", "price": "5000" },
 	{ "name": "طالبية", "price": "3000" },
-	{ "name": "الوزيرية", "price": "4000" },
-	{ "name": "شارع المغرب", "price": "5000" },
-	{ "name": "الصرافية + مدينة الطب + باب المعظم", "price": "5000" },
-	{ "name": "باب الشرجي+ السنك ", "price": "4000" },
+	{ "name": "الوزيرية", "price": "3000" },
+	{ "name": "شارع المغرب", "price": "4000" },
+	{ "name": "الصرافية + مدينة الطب + باب المعظم", "price": "4000" },
+	{ "name": "باب الشرجي ", "price": "4000" },
 	{ "name": "القاهرة الدلفية + حي المعلمين", "price": "4000" },
 	{ "name": "شيخ عمر", "price": "3000" },
 	{ "name": "كفاح", "price": "3000" },
@@ -43,7 +43,6 @@
 	{ "name": "زيونة", "price": "5000" },
 	{ "name": "الكرادة السعدون", "price": "5000" },
 	{ "name": "الكرادة الداخل والخارج", "price": "6000" },
-	{ "name": "الزعفرانية", "price": "10000" },
 	{ "name": "الجادرية", "price": "7000" },
 	{ "name": "الصالحية + شارع حيفا + العطيفية", "price": "6000" },
 	{ "name": "الكاظمية", "price": "8000" },
@@ -51,7 +50,7 @@
 	
 ],
 "restaurantDetails": {
-    "location": "https://maps.app.goo.gl/qaEYzmY52L6pwj2d8",
-    "serviceFee": 100
+    "location": "https://maps.app.goo.gl/SjM2gz2VJfUkCHh29",
+    "serviceFee": 0
 }
 }

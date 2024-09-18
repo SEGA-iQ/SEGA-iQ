@@ -1,7 +1,7 @@
 {
     "credentials": {
-        "email": "Abw-watan@Delivery.iq",
-        "password": "76667"
+        "email": "Almir@delevry.iq",
+        "password": "123"
     },
     "areas": [
 	{ "name": "جميع مناطق شارع فلسطين", "price": "2000" },
@@ -14,7 +14,7 @@
 	{ "name": "الوزيرية", "price": "4000" },
 	{ "name": "شارع المغرب", "price": "5000" },
 	{ "name": "الصرافية + مدينة الطب + باب المعظم", "price": "5000" },
-	{ "name": "باب الشرجي+ السنك ", "price": "4000" },
+        { "name": "باب الشرجي+ السنك ", "price": "4000" },
 	{ "name": "القاهرة الدلفية + حي المعلمين", "price": "4000" },
 	{ "name": "شيخ عمر", "price": "3000" },
 	{ "name": "كفاح", "price": "3000" },
@@ -51,7 +51,7 @@
 	
 ],
 "restaurantDetails": {
-    "location": "https://maps.app.goo.gl/qaEYzmY52L6pwj2d8",
-    "serviceFee": 100
+    "location": "https://maps.app.goo.gl/BC9B2dmmcru77W1i9",
+    "serviceFee": 0
 }
 }
