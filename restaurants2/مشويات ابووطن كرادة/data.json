@@ -3,9 +3,9 @@
         "email": "Abw-watancr@Delivery.iq",
         "password": "4334"
     },
-	"isSuspended": true,
+	"isSuspended": false,
     "suspensionReason": "تم ايقاف الطلبات الرجاء التواصل مع الدعم الفني",
-    "forceLogout": true,
+    "forceLogout": false,
     "areas": [
 	{ "name": "جميع مناطق شارع فلسطين", "price": "2000" },
 	{ "name": "النهضة", "price": "3000" },
