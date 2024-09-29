@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>إعادة توجيه</title>
     <script type="text/javascript">
-        window.location.href = "https://iraq-delivery.com/";
+        window.location.href = "https://rest.iraq-delivery.com/login/";
     </script>
 </head>
 <body>
