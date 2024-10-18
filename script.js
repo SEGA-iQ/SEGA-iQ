@@ -359,29 +359,29 @@ const message = `${currentRestaurant.name}
 // تحديد قناة الإرسال بناءً على المطعم
 const channelId = restaurants.includes(currentRestaurant.name) ? chatId1 : chatId2;
 
+try {
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            chat_id: channelId,
+            text: message,
+            parse_mode: 'Markdown'
+        })
+    });
 
-    try {
-        const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                chat_id: channelId,
-                text: message,
-                parse_mode: 'Markdown'
-            })
-        });
-
-        if (!response.ok) throw new Error('فشل في إرسال الرسالة إلى Telegram');
-        console.log('تم إرسال الرسالة إلى Telegram بنجاح.');
-        showSuccessMessage('تم إرسال الطلب بنجاح وسيصل السائق خلال 10 دقائق أو أقل.');
-    } catch (error) {
-        console.error('خطأ في إرسال الرسالة:', error);
-        showErrorMessage('حدث خطأ بسبب عدم اتصالك بالإنترنت أو غيرها. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى.');
-    }
+    if (!response.ok) throw new Error('فشل في إرسال الرسالة إلى Telegram');
+    console.log('تم إرسال الرسالة إلى Telegram بنجاح.');
+    showSuccessMessage('تمت العملية بنجاح');
+    return true; // إعادة قيمة true عند نجاح الإرسال
+} catch (error) {
+    console.error('خطأ في إرسال الرسالة:', error);
+    showErrorMessage('حدث خطأ بسبب عدم اتصالك بالإنترنت أو غيرها. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى.');
+    return false; // إعادة قيمة false عند الفشل
 }
-
+}
 
 
 // دالة لمعالجة إرسال الطلب
@@ -390,7 +390,6 @@ async function handleOrderSubmission() {
     const sessionResult = await validateSession();
     if (!sessionResult.isValid) return; // إذا كان الحساب موقوفًا وتم طرد المستخدم، الخروج من الدالة
 
-    // إذا كان الحساب موقوفًا ولكن بدون طرد المستخدم، فقط إظهار رسالة ومنع إرسال الطلب
     if (sessionResult.isSuspended) {
         showErrorMessage(` ${data.suspensionReason}`);
         return;
@@ -409,11 +408,12 @@ async function handleOrderSubmission() {
     const note = document.getElementById('note').value.trim();
     const orderDigits = document.getElementById('orderLastFourDigits').value.trim();
 
-    const serviceFee = currentRestaurant.restaurantDetails.serviceFee || 0;
+    // الحصول على رسوم الخدمة من حقل الإدخال
+    const serviceFee = parseFloat(document.getElementById('serviceFee').value) || 0;
 
     if (!validateOrderForm(customerNumber, location, price, orderPrice, orderDigits)) {
-        hideLoadingIndicator();  // إخفاء شاشة التحميل
-        submitButton.disabled = false;  // إعادة تفعيل الزر
+        hideLoadingIndicator();
+        submitButton.disabled = false;
         return;
     }
 
@@ -424,20 +424,26 @@ async function handleOrderSubmission() {
         orderPrice,
         note,
         orderDigits,
-        serviceFee,
+        serviceFee,  // استخدام رسوم الخدمة المُدخلة
         date: new Date(),
         restaurantDetails: currentRestaurant.restaurantDetails
     };
-
+    
+    // إضافة رقم الطلب إلى رسوم الخدمة
+    const orderDigitsValue = parseFloat(orderDigits) || 0;
+    order.serviceFee += orderDigitsValue;  // إضافة رقم الطلب إلى رسوم الخدمة
+    
     // إرسال الطلب إلى Telegram وحفظه في localStorage
-    await sendMessageToTelegram(order);
-    saveOrder(order);
-
-    updateServiceFeeTotal();  // تحديث مجموع رسوم الخدمة
-    resetOrderForm();
+    const sendSuccess = await sendMessageToTelegram(order);
+    
+    if (sendSuccess) {
+        saveOrder(order); // حفظ الطلب في localStorage
+        updateServiceFeeTotal();  // تحديث مجموع رسوم الخدمة
+        resetOrderForm(); // تنظيف نموذج الطلب بعد الإرسال
+    }
 
     hideLoadingIndicator();  // إخفاء شاشة التحميل
-    submitButton.disabled = false;  // إعادة تفعيل الزر
+    submitButton.disabled = false;
 }
 
 // دالة للتحقق من صحة نموذج الطلب
