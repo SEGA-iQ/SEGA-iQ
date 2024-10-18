@@ -1,0 +1,27 @@
+{
+    "credentials": {
+        "email": "iraq2@Delivery.iq",
+        "password": "7667"
+    },
+	"isSuspended": false,
+    "suspensionReason": "تم ايقاف الطلبات الرجاء التواصل مع الدعم الفني",
+    "forceLogout": false,
+    "areas": [
+        { "name": "الاعظمية", "price": "3000" },
+        { "name": "الوزيرية", "price": "3000" },
+        { "name": "القاهرة", "price": "3000" },
+        { "name": "الكريعات", "price": "4000" },
+        { "name": "صليخ", "price": "4000" },
+        { "name": "شارع فلسطين", "price": "4000" },
+        { "name": "شيخ عمر", "price": "4000" },
+        { "name": "الشعب", "price": "5000" },
+        { "name": "البنوك", "price": "5000" },
+        { "name": "حي البساتين", "price": "5000" },
+        { "name": "الكاظمية", "price": "5000" },
+        { "name": "العطيفية", "price": "5000" }
+    ],
+"restaurantDetails": {
+    "location": "https://maps.app.goo.gl/zy4DT3WwzKLMixiJ8",
+    "serviceFee": 500
+}
+}

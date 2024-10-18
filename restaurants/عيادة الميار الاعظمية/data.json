@@ -1,0 +1,43 @@
+{
+    "credentials": {
+        "email": "Miar2@Delivery.iq",
+        "password": "7667"
+    },
+	"isSuspended": false,
+    "suspensionReason": "تم ايقاف الطلبات الرجاء التواصل مع الدعم الفني",
+    "forceLogout": false,
+    "areas": [
+         { "name": "الاعظمية", "price": "3000" },
+    { "name": "الوزيرية", "price": "3000" },
+    { "name": "القاهرة", "price": "3000" },
+    { "name": "الكريعات", "price": "4000" },
+    { "name": "صليخ", "price": "4000" },
+    { "name": "شارع فلسطين", "price": "4000" },
+    { "name": "مدينة الصدر", "price": "5000" },
+    { "name": "شيخ عمر", "price": "4000" },
+    { "name": "الشعب", "price": "5000" },
+	{ "name": "السريدات", "price": "7000" },
+	{ "name": "الثعالبة", "price": "8000" },
+	{ "name": "الكفاح شيخ عمر", "price": "5000" },
+    { "name": "البنوك", "price": "5000" },
+    { "name": "حي البساتين", "price": "5000" },
+	{ "name": "بلديات", "price": "6000" },
+	{ "name": "الامين الاوله الامين الثانيه", "price": "7000" },
+	{ "name": "البنوك", "price": "5000" },
+	{ "name": "زيونة", "price": "6000" },
+	{ "name": "الغدير", "price": "6000" },
+	{ "name": "بغداد الجديده", "price": "6000" },
+	{ "name": "مجمع الزهور", "price": "7000" },
+	{ "name": "الكرادة", "price": "6000" },
+	{ "name": "الجادرية", "price": "6000" },
+    { "name": "الكاظمية", "price": "5000" },
+	{ "name": "العطيفية", "price": "5000" },
+	{ "name": "المنصور", "price": "5000" },
+    { "name": "العطيفية", "price": "5000" },
+    { "name": "الكرخ بصورة عامه", "price": "10000" }
+    ],
+"restaurantDetails": {
+    "location": "https://maps.app.goo.gl/JJ7rHwi1nLxoAm1r5",
+    "serviceFee": 500
+}
+}

@@ -1,0 +1,17 @@
+{
+    "credentials": {
+        "email": "test1@gmail.com",
+        "password": "123"
+    },
+	"isSuspended": false,
+    "suspensionReason": "تم ايقاف الطلبات الرجاء التواصل مع الدعم الفني",
+    "forceLogout": false,
+    "areas": [
+        {"name": "Area1", "price": "9,000"},
+        {"name": "Area2", "price": "1,500"}
+    ],
+"restaurantDetails": {
+    "location": "https://maps.app.goo.gl/WSdgCvwsQVTyH9bQ7",
+    "serviceFee": 0
+}
+}
