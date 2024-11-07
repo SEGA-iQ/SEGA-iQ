@@ -3,7 +3,7 @@
         "email": "muslly1@delevry.iq",
         "password": "7667"
      },
-	 "isSuspended": ture,
+	 "isSuspended": true,
     "suspensionReason": "تم انهاء اشتراكك مع الشركة بسبب تعاونكم مع طرف اخر:تواصل مع الدعم الفني لستعادة الخدمة",
     "forceLogout": false,
     "areas": [
