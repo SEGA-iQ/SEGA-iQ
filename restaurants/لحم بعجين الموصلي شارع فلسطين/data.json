@@ -3,8 +3,8 @@
         "email": "muslly1@delevry.iq",
         "password": "7667"
      },
-	 "isSuspended": false,
-    "suspensionReason": "تم ايقاف الطلبات الرجاء التواصل مع الدعم الفني",
+	 "isSuspended": ture,
+    "suspensionReason": "تم انهاء اشتراكك مع الشركة بسبب تعاونكم مع طرف اخر:تواصل مع الدعم الفني لستعادة الخدمة",
     "forceLogout": false,
     "areas": [
 	{ "name": "جميع مناطق شارع فلسطين", "price": "2000" },
