@@ -66,6 +66,58 @@ const restaurants = [
     'فاير فلاي شارع فلسطين',
     'كنافة وزنود الست عنتاب',
     'مطعم فن دونر شارع فلسطين',
+    'مطعم يوسف شارع فلسطين',
+    'ماشا بيبي شارع فلسطين',
+    'مطعم حجي اياد شارع فلسطين',
+    'مطعم ميلانو شارع فلسطين',
+    'شاورما على الصاج -كرادة',
+    'زهور فيروز شارع فلسطين',
+    'علوه زيوني السماك طالبية',
+    'مكتب تفاحة للاراكيل الطالبية',
+    'زهور المواسم شارع فلسطين',
+    'عيادة موفق الكناني شارع فلسطين',
+    'محل زهور الفراشة شارع فلسطين',
+    'متجر ترف للورد الطبيعي شارع فلسطين',
+    'صيدلية فارما شارع فلسطين',
+    'مشويات المرتضى شارع فلسطين',
+    'حلويات العنقود شارع فلسطين',
+    'مجرز علي شارع فلسطين',
+    'محل كصابه- مجاور ابو حاتم الصفار  شارع فلسطين',
+    'مركز بيبيي سيز للاطفال شارع فلسطين',
+    'اسماك الاخوين شارع فلسطين',
+    'سلام للفواكه والخضار شارع فلسطين',
+    'ماركت سنتر حي اور',
+    'زهور حكاية البنوك',
+    'مطعم حيدر المندلاوي جميلة',
+    'زهور سالي شارع فلسطين',
+    'مطعم الساعي شارع فلسطين',
+    'أسماك طبوش الثاني شارع فلسطين',
+    'سوبر صوص شارع فلسطين',
+    'ضلوع الجادرية تايمز -شارع فلسطين',
+    'باجة صالح شارع فلسطين',
+    'مرطبات وكافي هيلة',
+    'اسماك عمارالمياحي شارع فلسطين',
+    'اسماك سيف البغدادي شارع فلسطين',
+    'مكتبة الجامعة شارع فلسطين',
+    'اس ان بلس للمكملات الغذائية شارع فلسطين',
+    'لحوم فراس شارع فلسطين',
+    'تجهيزات الملك الغذائية',
+    'صيدلية دينا ثابت شارع فلسطين',
+    'مطعم دجاج تنور سفين شارع فلسطين',
+    'تردني كوزمتك شارع فلسطين',
+    'رونه كوزمتك الاعظمية',
+    'مهيمن ابو الكص شارع فلسطين',
+    'مندي البادية اليمني مدينة',
+    'توابل الشيف ابو مريم',
+    'قصابة هادي حلبوص شارع فلسطين',
+    'سنتر الحليب شارع فلسطين',
+    'لحوم ومشويات كبه الغانم',
+    'مطعم تنور بغدادنه شارع فلسطين',
+    'ميم روز شارع فلسطين',
+    'لحوم الجواد شارع فلسطين',
+    'يوس بركر القاهرة',
+    'لحم بعجين دحروج شارع فلسطين',
+    'مطعم السلطان شارع فلسطين',
     'تجربه'
     
 ];
@@ -84,6 +136,30 @@ const restaurants2 = [
     'عالم الحليب 6 الغدير',
     'ماشا بيبي الغدير',
     'اسماك المحيط كرادة',
+    'بيت المندي اليمني زيونة',
+    'عيادة زيونة البيطريه',
+    'بيتزا ولحم بعجين إبن الموصلي زيونة',
+    'هندسة الطعام الصحي كرادة',
+    'حلويات نفيسة زيونة',
+    'مطعم ديسكي زيونة',
+    'دولمتي الغدير',
+    'كاربون موبايل زيونة',
+    'مطعم ابو جعفر كرادة',
+    'مطبعة طارق السعدون',
+    'شاورما 66 الكرادة',
+    'لحم بعجين ابو عبدو الكرادة',
+    'مطعم ابن سمينه السعدون',
+    'دولمتي الغدير - 07736705827',
+    'زهور فلامنكو زيونة',
+    'ابو محمد المصلاوي الكرادة',
+    'بلو سكاي زيونة',
+    'محل جبال فون زيونة',
+    'دورا بيبي',
+    'كشري فول المرام',
+    'لحوم ومشويات كبه الغانم',
+    'عيادة الكنار زيونة',
+    'زهور المواسم كرادة',
+    'مكتبة اكد زيونة',
     'فايرفاير الكرادة'
     // أضف المزيد من المطاعم هنا
 ];
@@ -359,6 +435,7 @@ const message = `${currentRestaurant.name}
 // تحديد قناة الإرسال بناءً على المطعم
 const channelId = restaurants.includes(currentRestaurant.name) ? chatId1 : chatId2;
 
+
 try {
     const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: 'POST',
@@ -374,78 +451,74 @@ try {
 
     if (!response.ok) throw new Error('فشل في إرسال الرسالة إلى Telegram');
     console.log('تم إرسال الرسالة إلى Telegram بنجاح.');
-    showSuccessMessage('تمت العملية بنجاح');
-    return true; // إعادة قيمة true عند نجاح الإرسال
+    return true;  // النجاح
 } catch (error) {
     console.error('خطأ في إرسال الرسالة:', error);
     showErrorMessage('حدث خطأ بسبب عدم اتصالك بالإنترنت أو غيرها. لم يتم إرسال الطلب. يرجى المحاولة مرة أخرى.');
-    return false; // إعادة قيمة false عند الفشل
+    return false;  // الفشل
 }
 }
-
 
 // دالة لمعالجة إرسال الطلب
 async function handleOrderSubmission() {
-    // التحقق من صحة الجلسة
-    const sessionResult = await validateSession();
-    if (!sessionResult.isValid) return; // إذا كان الحساب موقوفًا وتم طرد المستخدم، الخروج من الدالة
+const sessionResult = await validateSession();
+if (!sessionResult.isValid) return; // إذا كان الحساب موقوفًا
 
-    if (sessionResult.isSuspended) {
-        showErrorMessage(` ${data.suspensionReason}`);
-        return;
-    }
-
-    const submitButton = document.getElementById('submitOrder');
-    submitButton.disabled = true;  // تعطيل الزر
-
-    showLoadingIndicator();  // إظهار شاشة التحميل
-
-    // جمع بيانات النموذج
-    const customerNumber = document.getElementById('customerNumber').value.trim();
-    const location = document.getElementById('location').value;
-    const price = document.getElementById('price').value.trim();
-    const orderPrice = document.getElementById('orderPrice').value.trim();
-    const note = document.getElementById('note').value.trim();
-    const orderDigits = document.getElementById('orderLastFourDigits').value.trim();
-
-    // الحصول على رسوم الخدمة من حقل الإدخال
-    const serviceFee = parseFloat(document.getElementById('serviceFee').value) || 0;
-
-    if (!validateOrderForm(customerNumber, location, price, orderPrice, orderDigits)) {
-        hideLoadingIndicator();
-        submitButton.disabled = false;
-        return;
-    }
-
-    const order = {
-        customerNumber,
-        location,
-        price,
-        orderPrice,
-        note,
-        orderDigits,
-        serviceFee,  // استخدام رسوم الخدمة المُدخلة
-        date: new Date(),
-        restaurantDetails: currentRestaurant.restaurantDetails
-    };
-    
-    // إضافة رقم الطلب إلى رسوم الخدمة
-    const orderDigitsValue = parseFloat(orderDigits) || 0;
-    order.serviceFee += orderDigitsValue;  // إضافة رقم الطلب إلى رسوم الخدمة
-    
-    // إرسال الطلب إلى Telegram وحفظه في localStorage
-    const sendSuccess = await sendMessageToTelegram(order);
-    
-    if (sendSuccess) {
-        saveOrder(order); // حفظ الطلب في localStorage
-        updateServiceFeeTotal();  // تحديث مجموع رسوم الخدمة
-        resetOrderForm(); // تنظيف نموذج الطلب بعد الإرسال
-    }
-
-    hideLoadingIndicator();  // إخفاء شاشة التحميل
-    submitButton.disabled = false;
+if (sessionResult.isSuspended) {
+    showErrorMessage(` ${data.suspensionReason}`);
+    return;
 }
 
+const submitButton = document.getElementById('submitOrder');
+submitButton.disabled = true;
+
+showLoadingIndicator();
+
+// جمع بيانات النموذج
+const customerNumber = document.getElementById('customerNumber').value.trim();
+const location = document.getElementById('location').value;
+const price = document.getElementById('price').value.trim();
+const orderPrice = document.getElementById('orderPrice').value.trim();
+const note = document.getElementById('note').value.trim();
+const orderDigits = document.getElementById('orderLastFourDigits').value.trim();
+
+const serviceFee = currentRestaurant.restaurantDetails.serviceFee || 0;
+
+if (!validateOrderForm(customerNumber, location, price, orderPrice, orderDigits)) {
+    hideLoadingIndicator();
+    submitButton.disabled = false;
+    return;
+}
+
+const order = {
+    customerNumber,
+    location,
+    price,
+    orderPrice,
+    note,
+    orderDigits,
+    serviceFee,
+    date: new Date(),
+    restaurantDetails: currentRestaurant.restaurantDetails
+};
+
+// محاولة إرسال الطلب إلى Telegram
+const isMessageSent = await sendMessageToTelegram(order);
+
+if (isMessageSent) {
+    // إذا تم إرسال الطلب بنجاح، قم بحفظه، وجمع رسوم الخدمة، ومسح الحقول
+    saveOrder(order);
+    updateServiceFeeTotal();
+    resetOrderForm();
+    showSuccessMessage('تم إرسال الطلب بنجاح وسيصل السائق خلال 10 دقائق أو أقل.');
+} else {
+    // في حالة الفشل، لا تقم بحفظ الطلب ولا تجمع الرسوم ولا تمسح الحقول
+    showErrorMessage('فشل في إرسال الطلب. لم يتم حفظ الطلب أو جمع الرسوم. يرجى المحاولة مرة أخرى.');
+}
+
+hideLoadingIndicator();
+submitButton.disabled = false;
+}
 // دالة للتحقق من صحة نموذج الطلب
 function validateOrderForm(customerNumber, location, price, orderPrice, orderDigits) {
     let isValid = true;
