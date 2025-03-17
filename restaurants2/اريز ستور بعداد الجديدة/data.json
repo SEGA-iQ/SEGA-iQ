@@ -1,0 +1,43 @@
+{
+    "credentials": {
+        "email": "aries@gmail.com",
+        "password": "7667"
+    },
+	"isSuspended": false,
+    "suspensionReason": "تم ايقاف الطلبات الرجاء التواصل مع الدعم الفني",
+    "forceLogout": false,
+    "areas": [
+		{ "name": "بغداد جديدة", "price": "2500" },
+		{ "name": "الغدير", "price": "3000" },
+	    { "name": "تل محمد", "price": "3000" },
+        { "name": "زيونة", "price": "4000" },
+        { "name": "كرادة", "price": "5000" },
+        { "name": "الجادرية", "price": "6000" },
+        { "name": "شارع فلسطين", "price": "5000" },
+        { "name": "البلديات", "price": "5000" },
+        { "name": "الحبيبية", "price": "5000" },
+        { "name": "المدينة", "price": "5000" },
+        { "name": "العبيدي", "price": "5000" },
+        { "name": "المشتل", "price": "5000" },
+        { "name": "الكمالية", "price": "5000" },
+        { "name": "الفضيلية", "price": "5000" },
+        { "name": " الزعفرانية", "price": "7000" },
+        { "name": "الامين الاول", "price": "5000" },
+        { "name": "الامين الثانية", "price": "5000" },
+        { "name": "الوزيرية ", "price": "7000" },
+        { "name": " الاعظمية", "price": "8000" },
+        { "name": " جميلة", "price": "6000" },
+        { "name": " البنوك", "price": "7000" },
+        { "name": "حي البساتين + حي اور + الشعب", "price": "8000" },
+       { "name": " الكريعاات + حي تونس ", "price": "8000" },
+        { "name": "الدورة", "price": "8000" },
+        { "name": "باقي الكرخ بصورة عامة", "price": "10000" },
+		{ "name": "بغداد (24 ساعة)", "price": "5000" },
+		{ "name": "محافظات (48 ساعة)", "price": "6000" }
+
+    ],
+    "restaurantDetails": {
+        "location": "https://maps.app.goo.gl/yxTsnpsGvgkZtatq6",
+        "serviceFee": 0
+    }
+}
