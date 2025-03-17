@@ -2,3 +2,39 @@ html {
   height: 100%;
   width: 100%;
 }
+
+/* تنظيم z-index للنوافذ المنبثقة */
+/* مستويات z-index: أعلى رقم يظهر فوق كل شيء */
+#loadingIndicator { z-index: 9999 !important; }
+#maintenanceMessage { z-index: 9900 !important; }
+#errorMessage, #successMessage { z-index: 9800 !important; }
+#confirmationModal { z-index: 9700 !important; }
+#serviceFeeTotalContainer { z-index: 9600 !important; }
+#ordersModal { z-index: 9500 !important; }
+#sideMenu { z-index: 9400 !important; }
+#menuToggle { z-index: 9300 !important; }
+#floatingCloseBtn { z-index: 9600 !important; }
+
+/* إصلاح لمشكلة نافذة عرض رسوم الخدمة */
+#serviceFeeTotalContainer {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background-color: white !important;
+  padding: 25px !important;
+  border-radius: 15px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
+  text-align: center !important;
+  min-width: 300px !important;
+  max-width: 90% !important;
+  z-index: 9600 !important;
+}
+
+/* ضمان أن الرسائل والتنبيهات لها أولوية في العرض */
+.modal, 
+#errorMessage, 
+#successMessage {
+  position: fixed !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
